@@ -32,11 +32,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: 'Deploy to Azure Web App (Staging)'
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'GithubActionsWS'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+        run: echo deployed staging!!
 
   # 3. Deploy to Production (Requires Manual Approval Gate)
   deploy-production:
@@ -51,8 +47,5 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: 'Deploy to Azure Web App (Production)'
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'GithubActionsWS-Prod'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+        run: echo deployed prod!!
+
