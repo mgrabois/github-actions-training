@@ -1,0 +1,49 @@
+name: Python Package Testing
+
+on: 
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: 'Logging Level'
+        default: 'INFO'
+        type: choice
+        options: [INFO, DEBUG]
+
+jobs:
+  # 1. Call the Reusable Workflow for standard linting/type checking
+  # This ensures the code is clean before we waste time/money testing on Windows/macOS
+  static-analysis:
+    uses: mgrabois/GitHub---Actions-Training/.github/workflows/python-standard-checks.yml@main
+    with:
+      python-version: "3.11"
+
+  # 2. Run the Matrix Tests
+  # We add 'needs: static-analysis' so tests only run if the code passes PEP 8
+  test:
+    needs: static-analysis
+    name: Test on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.11']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest pytest-github-actions-annotate-failures
+
+      - name: Run tests
+        run: |
+          pytest --log-level=${{ github.event.inputs.log_level }}
