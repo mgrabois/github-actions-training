@@ -1,0 +1,7 @@
+# --- Testing Framework ---
+pytest==8.0.0
+pytest-cov==4.1.0
+
+# --- Dependencies ---
+# (Our calculator uses standard libraries, so no extra packages are needed yet.
+# But if you used 'requests' or 'pandas', you would list them here.)
