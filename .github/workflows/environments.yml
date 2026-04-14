@@ -21,26 +21,26 @@ jobs:
           pip install -r requirements.txt
 
   # 2. Deploy to Staging (Triggered automatically on push/PR)
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://GithubActionsWS.azurewebsites.net
+ # deploy-staging:
+ #   needs: build
+ #   runs-on: ubuntu-latest
+ #   environment:
+ #     name: staging
+  #    url: https://GithubActionsWS.azurewebsites.net
     
-    steps:
-      - uses: actions/checkout@v4
+#    steps:
+  #    - uses: actions/checkout@v4
 
-      - name: 'Deploy to Azure Web App (Staging)'
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'GithubActionsWS'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+ #     - name: 'Deploy to Azure Web App (Staging)'
+   #     uses: azure/webapps-deploy@v2
+    #    with:
+     #     app-name: 'GithubActionsWS'
+      #    publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+       #   package: .
 
   # 3. Deploy to Production (Requires Manual Approval Gate)
   deploy-production:
-    needs: deploy-staging
+   # needs: deploy-staging
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
